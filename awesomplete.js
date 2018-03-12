@@ -30,7 +30,7 @@ var _ = function (input, o) {
 		maxItems: 10,
 		autoFirst: false,
 		data: _.DATA,
-		filter: _.FILTER_CONTAINS,
+		filter: _.FILTER_LAST_WORD_STARTSWITH,
 		sort: o.sort === false ? false : _.SORT_BYLENGTH,
 		item: _.ITEM,
 		replace: _.REPLACE
@@ -341,6 +341,14 @@ _.FILTER_CONTAINS = function (text, input) {
 
 _.FILTER_STARTSWITH = function (text, input) {
 	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+};
+
+_.FILTER_LAST_WORD_STARTSWITH = function (text, input) {
+	var words = input.split(/\s+/);
+	if (words.length == 0) return false;
+	var lastWord = words[words.length-1];
+	if (lastWord.length == 0) return false;
+	return RegExp("^" + $.regExpEscape(lastWord), "i").test(text);
 };
 
 _.SORT_BYLENGTH = function (a, b) {
